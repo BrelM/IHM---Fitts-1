@@ -5,6 +5,7 @@
 
 using namespace std;
 
+
 FittsController::FittsController() {
 	this->fittsModel = new FittsModel();
 	this->fittsView = new FittsView(this, this->fittsModel);
@@ -171,7 +172,7 @@ void FittsController::initGame() {
 							  "background-color: transparent;");
 	labelStart->autoFillBackground();
 	labelStart->setAlignment(Qt::AlignCenter);
-	QGraphicsProxyWidget *labelStartProxy = scene->addWidget(labelStart);
+    QGraphicsProxyWidget *labelStartProxy = scene->addWidget(labelStart);
 	labelStartProxy->setPos((size / 2) + 160, (size / 2) + 28);
 
 	QPropertyAnimation *animation =
@@ -252,7 +253,7 @@ void FittsController::calculateResultHome() {
 		DistRelatif.append(log(2 * D / this->fittsModel->cercleSize[i]));
 	}
 
-	// Sort
+    // Sort using an optimal bubble sort variant
 	for (int i = DistRelatif.length() - 1; i > 0; i--) {
 		for (int j = 0; j < i; j++) {
 			if (DistRelatif[j] > DistRelatif[j + 1]) {

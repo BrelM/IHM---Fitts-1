@@ -12,14 +12,16 @@ SOURCES += \
 	controller/fittscontroller.cpp \
 	model/fittsmodel.cpp \
 	view/graphicwidget.cpp \
-	model/keystrokemodel.cpp
+	model/keystrokemodel.cpp \
+	view/zoomablechartview.cpp
 
 HEADERS += \
 	view/fittsview.h \
 	controller/fittscontroller.h \
 	model/fittsmodel.h \
 	view/graphicwidget.h \
-	model/keystrokemodel.h
+	model/keystrokemodel.h \
+	view/zoomablechartview.h
 
 INCLUDEPATH += \
 	$$PWD/view \

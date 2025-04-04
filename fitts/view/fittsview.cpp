@@ -1,4 +1,5 @@
 #include "fittsview.h"
+#include "zoomablechartview.h"
 
 #include "fittscontroller.h"
 #include "fittsmodel.h"
@@ -57,6 +58,8 @@ FittsView::FittsView(FittsController *fittsController, FittsModel *fittsModel)
 		SLOT(minSizeChanged(int)));
 	connect(maxSize, SIGNAL(valueChanged(int)), fittsController,
 		SLOT(maxSizeChanged(int)));
+
+
 }
 
 FittsView::~FittsView() {}
@@ -245,13 +248,13 @@ void FittsView::initWindows() {
 
 	// Graphiques
 
-	plotHome = new QChartView;
+    plotHome = new ZoomableChartView;
 	plotHome->setRenderHint(QPainter::Antialiasing);
-	plotHome->setRubberBand(QChartView::RectangleRubberBand);
+    plotHome->setRubberBand(ZoomableChartView::RectangleRubberBand);
 
-	plotHomeDistance = new QChartView;
+    plotHomeDistance = new ZoomableChartView;
 	plotHomeDistance->setRenderHint(QPainter::Antialiasing);
-	plotHomeDistance->setRubberBand(QChartView::RectangleRubberBand);
+    plotHomeDistance->setRubberBand(ZoomableChartView::RectangleRubberBand);
 
 	QTabWidget *graphSelector = new QTabWidget;
 	graphSelector->addTab(plotHome, "Temps par cible");

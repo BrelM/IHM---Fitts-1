@@ -1,7 +1,11 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
-
 #include "graphicwidget.h"
+
+#include <QMenu>
+#include <QAction>
+#include <QMenuBar>
+#include <QMessageBox>
 
 #include <QChart>
 #include <QDateTime>
@@ -37,9 +41,18 @@ public:
     /**
      * @brief Initialiser les widgets de la fenêtre principale
      */
-	void initWindows();
+    void initWindows();
 
 private:
+
+    QMenu *helpMenu;
+    QAction *actionQuit;
+    QAction *actionRestart;
+    QAction *actionShortcuts;
+
+    void createMenus();
+    void createTooltips();
+
     /**
      * @brief Mettre à jour le texte d'information lors d'un clic sur une cible
      */

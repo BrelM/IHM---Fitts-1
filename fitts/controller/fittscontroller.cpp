@@ -5,6 +5,7 @@
 
 using namespace std;
 
+
 FittsController::FittsController() {
     this->fittsModel = new FittsModel();
     this->fittsView = new FittsView(this, this->fittsModel);
@@ -137,6 +138,7 @@ void FittsController::finish() {
 }
 
 void FittsController::initGame() {
+
     QGraphicsScene *scene = this->fittsView->scene;
     scene->clear();
 
@@ -184,6 +186,8 @@ void FittsController::initGame() {
     animation->setEasingCurve(QEasingCurve::InQuad);
     animation->setLoopCount(-1);
     animation->start();
+
+
 }
 
 void FittsController::calculateResultHome() {
@@ -382,6 +386,7 @@ void FittsController::calculateResultHome() {
     this->fittsModel->itc95 = 2 * this->fittsModel->erreurType;
 
     this->displayResults();
+
 }
 
 void FittsController::addHisto() {

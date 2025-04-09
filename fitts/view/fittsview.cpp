@@ -1,4 +1,5 @@
 #include "fittsview.h"
+#include "zoomablechartview.h"
 
 #include "fittscontroller.h"
 #include "fittsmodel.h"
@@ -7,6 +8,7 @@
 #include <iostream>
 
 FittsView::FittsView(FittsController *fittsController, FittsModel *fittsModel)
+
     : QMainWindow(), fittsModel(fittsModel) {
 
     // Définition d'une taille de fenêtre par défaut. La fenêtre reste
@@ -294,14 +296,14 @@ void FittsView::initWindows() {
 
     // Graphiques
 
-    plotHome = new QChartView;
+    plotHome = new ZoomableChartView;
     plotHome->setRenderHint(QPainter::Antialiasing);
-    plotHome->setRubberBand(QChartView::RectangleRubberBand);
+    plotHome->setRubberBand(ZoomableChartView::RectangleRubberBand);
 
-    plotHomeDistance = new QChartView;
-    plotHomeDistance->setRenderHint(QPainter::Antialiasing);
-    plotHomeDistance->setRubberBand(QChartView::RectangleRubberBand);
-
+    plotHomeDistance = new ZoomableChartView;
+	  plotHomeDistance->setRenderHint(QPainter::Antialiasing);
+    plotHomeDistance->setRubberBand(ZoomableChartView::RectangleRubberBand);
+  
     QTabWidget *graphSelector = new QTabWidget;
     graphSelector->addTab(plotHome, "Temps par cible");
     graphSelector->addTab(plotHomeDistance, "Temps en fonction de la distance");

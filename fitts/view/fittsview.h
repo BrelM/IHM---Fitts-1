@@ -1,6 +1,7 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 #include "graphicwidget.h"
+#include "zoomablechartview.h"
 
 #include <QMenu>
 #include <QAction>
@@ -143,7 +144,7 @@ private:
     QLabel *avgTime;
 
     // Graphiques résultats
-    QChartView *plotHome; ///< Vue pour le graphique du temps par cible
+    ZoomableChartView *plotHome; ///< Vue pour le graphique du temps par cible
     QChartView *plotHomeDistance; ///< Vue pour le graphique du temps en fonction de la distance
 
     // Palettes

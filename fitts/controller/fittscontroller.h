@@ -37,6 +37,7 @@ public:
 	QList<FittsModel> *histModel;
     QJsonArray getHisto();
 
+
 private:
     /**
      * @brief Afficher les résultats lorsque le test est terminé

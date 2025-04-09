@@ -5,11 +5,12 @@
 #include <QFontDatabase>
 
 int main(int argc, char *argv[]) {
+
 	QApplication::setAttribute(
 		Qt::AA_EnableHighDpiScaling); // Suivre le mode de mise à l'échelle du
 	                                  // système
 
-	QApplication a(argc, argv);
+    QApplication a(argc, argv);
 	a.setApplicationName("Fitts");
 	a.setApplicationDisplayName("Loi de Fitts et Keystroke - HM40");
 	a.setAttribute(Qt::AA_UseHighDpiPixmaps); // Affichage correct des SVG lors

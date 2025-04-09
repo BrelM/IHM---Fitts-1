@@ -15,6 +15,7 @@ FittsController::FittsController() {
     this->fittsView->show();
 }
 
+
 FittsController::~FittsController() {
     delete fittsModel;
     delete fittsView;

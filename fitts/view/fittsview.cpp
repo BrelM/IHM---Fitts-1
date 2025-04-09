@@ -71,7 +71,26 @@ void FittsView::createMenus() {
         QMessageBox::information(this, "Raccourcis",
                                  "Ctrl+R : Relancer\nCtrl+Q : Quitter\n...");
     });
+
     helpMenu->addAction(actionShortcuts);
+    // Ajout de l'action pour relancer
+    actionRestart = new QAction(tr("Relancer"), this);
+    actionRestart->setShortcut(tr("Ctrl+R"));
+    connect(actionRestart, &QAction::triggered, this, &FittsView::restartApp);
+
+
+
+    // Ajout de l'action au menu "Aide"
+    helpMenu->addAction(actionRestart);
+
+}
+// Slot qui relance l'application
+void FittsView::restartApp() {
+    // Ferme l'application actuelle
+    QApplication::quit();
+
+    // Redémarre l'application
+    QProcess::startDetached(qApp->arguments()[0], qApp->arguments());
 }
 
 void FittsView::createTooltips() {

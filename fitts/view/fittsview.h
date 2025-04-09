@@ -35,20 +35,24 @@ class FittsController;
 class FittsView : public QMainWindow {
 	Q_OBJECT
 public:
+
 	FittsView(FittsController *fittsController, FittsModel *fittsModel);
 	~FittsView();
 
     /**
      * @brief Initialiser les widgets de la fenêtre principale
      */
+    void restartApp();  // Déclaration de la méthode restartApp
+
     void initWindows();
 
 private:
-
+    QMenu *fileMenu;
     QMenu *helpMenu;
     QAction *actionQuit;
     QAction *actionRestart;
     QAction *actionShortcuts;
+
 
     void createMenus();
     void createTooltips();

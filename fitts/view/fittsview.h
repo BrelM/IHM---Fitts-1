@@ -1,8 +1,12 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
-
 #include "graphicwidget.h"
 #include "zoomablechartview.h"
+
+#include <QMenu>
+#include <QAction>
+#include <QMenuBar>
+#include <QMessageBox>
 
 #include <QChart>
 #include <QDateTime>
@@ -32,15 +36,28 @@ class FittsController;
 class FittsView : public QMainWindow {
 	Q_OBJECT
 public:
+
 	FittsView(FittsController *fittsController, FittsModel *fittsModel);
 	~FittsView();
 
     /**
      * @brief Initialiser les widgets de la fenêtre principale
      */
-	void initWindows();
+    void restartApp();  // Déclaration de la méthode restartApp
+
+    void initWindows();
 
 private:
+    QMenu *fileMenu;
+    QMenu *helpMenu;
+    QAction *actionQuit;
+    QAction *actionRestart;
+    QAction *actionShortcuts;
+
+
+    void createMenus();
+    void createTooltips();
+
     /**
      * @brief Mettre à jour le texte d'information lors d'un clic sur une cible
      */

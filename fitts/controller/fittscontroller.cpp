@@ -432,6 +432,7 @@ void FittsController::calculateResultHome() {
     // Mise à jour des valeurs des label de a et b
     this->fittsView->aLabel->setText("a : " + QString::number(this->fittsModel->a));
     this->fittsView->bLabel->setText("b : " + QString::number(this->fittsModel->b));
+    this->fittsView->nbCibleLabel->setText("Nombre de cible: " + QString::number(this->fittsModel->nbCible));
 
     this->displayResults();
 

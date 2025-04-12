@@ -64,3 +64,12 @@ QJsonObject FittsModel::QPointToQJsonobject(QPoint point) {
 
 	return converter;
 }
+
+
+void FittsModel::setA(int value) {
+    this->a = value * 0.1;
+}
+
+void FittsModel::setB(int value) {
+    this->b = value * 0.1;
+}

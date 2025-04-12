@@ -73,3 +73,33 @@ QAbstractSpinBox::up-button {
     font-size: 16px;
     font-weight: 500;
 }
+
+QSlider::groove:horizontal {
+    border: 1px solid #bbb;
+    background: #eee;
+    height: 10px;
+    border-radius: 5px;
+}
+
+QSlider::handle:horizontal {
+    background: #0078d7;
+    border: 1px solid #5c5c5c;
+    width: 18px;
+    height: 18px;
+    margin: -5px 0; /* center the handle */
+    border-radius: 9px;
+}
+
+QSlider::sub-page:horizontal {
+    background: #80caff;
+    border: 1px solid #777;
+    height: 10px;
+    border-radius: 5px;
+}
+
+QSlider::add-page:horizontal {
+    background: #ccc;
+    border: 1px solid #777;
+    height: 10px;
+    border-radius: 5px;
+}

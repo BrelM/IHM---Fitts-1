@@ -2,6 +2,7 @@
 
 #include "fittsmodel.h"
 #include "fittsview.h"
+//#include <iostream>
 
 using namespace std;
 
@@ -56,6 +57,19 @@ void FittsController::aValueChanged(double value) {
 void FittsController::bValueChanged(double value) {
     this->fittsModel->b = value;
 }
+
+
+// For the slider with values between 1 and 10
+void FittsController::updateAValue(int value) {
+    this->fittsModel->setA(value);
+}
+
+// For the slider with values between 1 and 10
+void FittsController::updateBValue(int value) {
+    this->fittsModel->setB(value);
+}
+
+
 void FittsController::nbCibleChanged(int value) {
     this->fittsModel->nbCible = value;
 }
@@ -72,7 +86,7 @@ void FittsController::cibleClicked(int x, int y) {
         timer->start();
 
         // On démarre avec la première cible
-        this->fittsModel->clickPoints.append(QPoint(x, y));
+        //this->fittsModel->clickPoints.append(QPoint(x, y));
         this->nextCible();
     } else {
         QPointF coords = this->fittsView->graphicView->mapToScene(x, y);
@@ -201,6 +215,7 @@ void FittsController::calculateResultHome() {
     chartTimePerTarget->setBackgroundVisible(false);
     this->fittsView->plotHome->setChart(chartTimePerTarget);
 
+
     QLineSeries *expSeries = new QLineSeries;
     QLineSeries *fittsSeries = new QLineSeries;
     QCategoryAxis *axis = new QCategoryAxis;
@@ -245,6 +260,7 @@ void FittsController::calculateResultHome() {
         listeTempsCalcule.append(value);
         fittsValues.append(value);
         fittsSeries->append(i, value);
+        //std::cerr << value << " ";
 
         axis->append(QString::number(i + 1) + "<br />T: " + QString::number(T) +
                          "<br />D: " + QString::number(D),
@@ -322,28 +338,56 @@ void FittsController::calculateResultHome() {
     axis->setLabelsColor(color_white);
     axisDistance->setLabelsColor(color_white);
 
-    chartTimePerTarget->setAxisX(axis, expSeries);
-    chartTimePerTarget->setAxisX(axis, fittsSeries);
+    //chartTimePerTarget->setAxisX(axis, expSeries);
+    //chartTimePerTarget->setAxisX(axis, fittsSeries);
 
+    // Adding axis in a non obsolete way
+    chartTimePerTarget->addAxis(axis, Qt::AlignBottom);
+    expSeries->attachAxis(axis);
+    fittsSeries->attachAxis(axis);
+
+    // Y axis for methodical fitts values
     QValueAxis *axisY = new QValueAxis;
-    axisY->setTitleText("temps (en ms)");
+    axisY->setTitleText("temps (en ms) - Formule de Fitts");
     axisY->setGridLinePen(dotted);
     axisY->setLabelsColor(color_white);
-    chartTimePerTarget->setAxisY(axisY, expSeries);
+    chartTimePerTarget->addAxis(axisY, Qt::AlignLeft);
+    fittsSeries->attachAxis(axisY);
+
+    // Y axis for experimental fitts values
+    QValueAxis *axisY2 = new QValueAxis;
+    axisY2->setTitleText("temps (en ms) - Expérimental");
+    axisY2->setGridLinePen(dotted);
+    axisY2->setLabelsColor(color_white);
+    chartTimePerTarget->addAxis(axisY2, Qt::AlignRight);
+    expSeries->attachAxis(axisY2);
+
 
     // New plotHomeDistance axes
     axisDistance->setLabelsPosition(QCategoryAxis::AxisLabelsPositionOnValue);
     chartTimeFunctionOfDistance->addSeries(expSeriesDistance);
     chartTimeFunctionOfDistance->addSeries(fittsSeriesDistance);
-    chartTimeFunctionOfDistance->setAxisX(axisDistance, expSeriesDistance);
+    chartTimeFunctionOfDistance->addAxis(axisDistance, Qt::AlignBottom);
+    expSeriesDistance->attachAxis(axisDistance);
+    fittsSeriesDistance->attachAxis(axisDistance);
+    // chartTimeFunctionOfDistance->setAxisX(axisDistance, expSeriesDistance);
 
+    // Y axis for methodical fitts values
     QValueAxis *axisYDistance = new QValueAxis;
     axisYDistance->setTitleText("temps (en ms)");
     axisYDistance->setGridLinePen(dotted);
     axisYDistance->setLabelsColor(color_white);
     chartTimeFunctionOfDistance->addAxis(axisYDistance, Qt::AlignLeft);
-    chartTimeFunctionOfDistance->setAxisY(axisYDistance, fittsSeriesDistance);
+    fittsSeriesDistance->attachAxis(axisYDistance);
 
+    /*/Y axis for experimental fitts values
+    QValueAxis *axisY1Distance = new QValueAxis;
+    axisY1Distance->setTitleText("temps (en ms)");
+    axisY1Distance->setGridLinePen(dotted);
+    axisY1Distance->setLabelsColor(color_white);
+    chartTimeFunctionOfDistance->addAxis(axisY1Distance, Qt::AlignRight);
+    expSeriesDistance->attachAxis(axisY1Distance);
+    */
     // end New plotHomeDistance axes
 
     // Calcul des valeurs
@@ -384,6 +428,10 @@ void FittsController::calculateResultHome() {
 
     // On stocke itc 95%
     this->fittsModel->itc95 = 2 * this->fittsModel->erreurType;
+
+    // Mise à jour des valeurs des label de a et b
+    this->fittsView->aLabel->setText("a : " + QString::number(this->fittsModel->a));
+    this->fittsView->bLabel->setText("b : " + QString::number(this->fittsModel->b));
 
     this->displayResults();
 
@@ -474,6 +522,8 @@ void FittsController::showHelp() {
         "le calcul de la loi de fitts pour chaque cible du test et  le second "
         "le temps d'exécution en fonction de la distance relative.");
 }
+
+
 
 void FittsController::displayResults() {
     this->fittsView->diffMoy->setText(

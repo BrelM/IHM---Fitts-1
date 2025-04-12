@@ -61,6 +61,12 @@ FittsView::FittsView(FittsController *fittsController, FittsModel *fittsModel)
     connect(maxSize, SIGNAL(valueChanged(int)), fittsController,
             SLOT(maxSizeChanged(int)));
 
+    connect(aSlider, SIGNAL(sliderMoved(int)), fittsController, SLOT(updateAValue(int)));
+    connect(bSlider, SIGNAL(sliderMoved(int)), fittsController, SLOT(updateBValue(int)));
+
+    connect(aSlider, SIGNAL(sliderMoved(int)), fittsController, SLOT(initResultsScreen()));
+    connect(bSlider, SIGNAL(sliderMoved(int)), fittsController, SLOT(initResultsScreen()));
+
 }
 
 FittsView::~FittsView() {}
@@ -241,13 +247,24 @@ void FittsView::initWindows() {
 
     QLabel *label;
 
+    // Layout des détails de l'expérimentation (statistiques, paramétrage de a et b)
+    QBoxLayout *detailsLayout = new QHBoxLayout();
+    QWidget *detailsWidget = new QWidget();
+
+    detailsWidget->setLayout(detailsLayout);
+
+    resultsLayout->addWidget(detailsWidget);
+
+
     // Layout résultat: stats
     QWidget *statsWidget = new QWidget();
 
-    resultsLayout->addWidget(statsWidget);
+    detailsLayout->addWidget(statsWidget);
+    detailsLayout->addStretch();
 
     QBoxLayout *statsWidgetLayout = new QVBoxLayout();
     statsWidget->setLayout(statsWidgetLayout);
+
 
     ecartType = new QLabel();
     statsWidgetLayout->addWidget(ecartType);
@@ -263,6 +280,52 @@ void FittsView::initWindows() {
 
     avgTime = new QLabel();
     statsWidgetLayout->addWidget(avgTime);
+
+
+    // Slider pour les valeurs a et b de la formule de Fitts
+    QBoxLayout *sliderLayout = new QVBoxLayout();
+    QWidget *sliderWidget = new QWidget();
+    sliderWidget->setLayout(sliderLayout);
+
+    detailsLayout->addWidget(sliderWidget);
+
+    QLabel *detailsTitle = new QLabel();
+    detailsTitle->setText("Paramètres de la formule de Fitts");
+    detailsTitle->setProperty("class", "subtitle");
+    sliderLayout->addWidget(detailsTitle);
+
+    aLabel = new QLabel();
+    sliderLayout->addWidget(aLabel);
+
+    // Valeur de a
+    aSlider = new QSlider(Qt::Horizontal);
+    aSlider->setMinimum(2);
+    aSlider->setMaximum(20);
+    aSlider->setSingleStep(2);
+    aSlider->setTickInterval(1);
+    aSlider->setTickPosition(QSlider::TicksLeft);
+    aSlider->setMaximumWidth(500);
+
+    sliderLayout->addWidget(aSlider);
+
+
+    bLabel = new QLabel();
+    sliderLayout->addWidget(bLabel);
+
+    // Valeur de b
+    bSlider = new QSlider(Qt::Horizontal);
+    bSlider->setMinimum(1);
+    bSlider->setMaximum(10);
+    bSlider->setSingleStep(1);
+    bSlider->setTickInterval(1);
+    bSlider->setTickPosition(QSlider::TicksLeft);
+    bSlider->setMaximumWidth(500);
+
+
+    sliderLayout->addWidget(bSlider);
+
+
+
 
     QBoxLayout *graphHomeLayout = new QVBoxLayout();
     resultsLayout->addLayout(graphHomeLayout);

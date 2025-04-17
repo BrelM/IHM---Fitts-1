@@ -17,8 +17,8 @@ FittsView::FittsView(FittsController *fittsController, FittsModel *fittsModel)
 
     this->initPalette();
     this->initWindows();
-    createMenus();       // 🧭 ajouter les menus ici
-    createTooltips();    // 💬 bulles d'aide
+    createMenus();
+    createTooltips();
     // Connexion slots-signaux
 
     // Changement d'écran
@@ -64,6 +64,7 @@ FittsView::FittsView(FittsController *fittsController, FittsModel *fittsModel)
 }
 
 FittsView::~FittsView() {}
+
 void FittsView::createMenus() {
     // Menu Aide
     helpMenu = menuBar()->addMenu(tr("&Aide"));
@@ -75,15 +76,20 @@ void FittsView::createMenus() {
     });
 
     helpMenu->addAction(actionShortcuts);
+    helpMenu->setStyleSheet(
+        "QMenu { background: #2c3e50; color: #ecf0f1; border-radius: 8px; }"
+        "QMenu::item { padding: 8px 16px; border-radius: 6px; }"
+        "QMenu::item:selected { background-color: #87CEEB; color: white; }" // Bleu ciel
+        "QMenu::item:pressed { background-color: #2980b9; }"
+        );
+
     // Ajout de l'action pour relancer
     actionRestart = new QAction(tr("Relancer"), this);
     actionRestart->setShortcut(tr("Ctrl+R"));
     connect(actionRestart, &QAction::triggered, this, &FittsView::restartApp);
-
-
-
     // Ajout de l'action au menu "Aide"
     helpMenu->addAction(actionRestart);
+
 
 }
 // Slot qui relance l'application

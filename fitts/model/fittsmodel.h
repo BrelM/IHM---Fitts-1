@@ -13,6 +13,8 @@ class FittsController;
 class FittsModel {
 public:
 	FittsModel();
+    void setA(int);
+    void setB(int);
 	QJsonObject writeDataJson();
 	QJsonObject QPointToQJsonobject(QPoint);
 

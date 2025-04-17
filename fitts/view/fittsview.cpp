@@ -61,6 +61,14 @@ FittsView::FittsView(FittsController *fittsController, FittsModel *fittsModel)
     connect(maxSize, SIGNAL(valueChanged(int)), fittsController,
             SLOT(maxSizeChanged(int)));
 
+    connect(aSlider, SIGNAL(sliderMoved(int)), fittsController, SLOT(updateAValue(int)));
+    connect(bSlider, SIGNAL(sliderMoved(int)), fittsController, SLOT(updateBValue(int)));
+    connect(nbCibleSlider, SIGNAL(sliderMoved(int)), fittsController, SLOT(nbCibleChanged(int)));
+
+    connect(aSlider, SIGNAL(sliderMoved(int)), fittsController, SLOT(initResultsScreen()));
+    connect(bSlider, SIGNAL(sliderMoved(int)), fittsController, SLOT(initResultsScreen()));
+    connect(nbCibleSlider, SIGNAL(sliderMoved(int)), fittsController, SLOT(initResultsScreen()));
+
 }
 
 FittsView::~FittsView() {}
@@ -247,13 +255,26 @@ void FittsView::initWindows() {
 
     QLabel *label;
 
+    // Layout des détails de l'expérimentation (statistiques, paramétrage de a et b)
+    QBoxLayout *detailsLayout = new QHBoxLayout();
+    QWidget *detailsWidget = new QWidget();
+
+    detailsWidget->setLayout(detailsLayout);
+
+    resultsLayout->addWidget(detailsWidget);
+
+
     // Layout résultat: stats
     QWidget *statsWidget = new QWidget();
+    statsWidget->setMinimumWidth(this->width() / 2);
 
-    resultsLayout->addWidget(statsWidget);
+    detailsLayout->addWidget(statsWidget);
+    //detailsLayout->addStretch();
 
     QBoxLayout *statsWidgetLayout = new QVBoxLayout();
     statsWidget->setLayout(statsWidgetLayout);
+    statsWidget->setProperty("class", "section");
+
 
     ecartType = new QLabel();
     statsWidgetLayout->addWidget(ecartType);
@@ -269,6 +290,78 @@ void FittsView::initWindows() {
 
     avgTime = new QLabel();
     statsWidgetLayout->addWidget(avgTime);
+
+
+    // Slider pour les valeurs a et b de la formule de Fitts
+    QBoxLayout *sliderLayout = new QVBoxLayout();
+    QWidget *sliderWidget = new QWidget();
+    sliderWidget->setLayout(sliderLayout);
+    sliderWidget->setProperty("class", "section");
+    sliderWidget->setMinimumWidth(this->width() / 2);
+    //sliderLayout->setProperty("class", "section");
+
+    detailsLayout->addWidget(sliderWidget);
+
+    QLabel *detailsTitle = new QLabel();
+    detailsTitle->setText("Paramètres de la formule de Fitts");
+    detailsTitle->setProperty("class", "subtitle");
+    sliderLayout->addWidget(detailsTitle);
+
+    // Width of slider 'QObject's
+    int widthSlider = 400;
+
+    aLabel = new QLabel();
+    sliderLayout->addWidget(aLabel);
+
+    // Valeur de a
+    aSlider = new QSlider(Qt::Horizontal);
+    aSlider->setMinimum(2);
+    aSlider->setMaximum(20);
+    aSlider->setSingleStep(2);
+    aSlider->setTickInterval(10);
+    aSlider->setTickPosition(QSlider::TicksBelow);
+    //aSlider->setStyleSheet("background-color: white;");
+    aSlider->setMaximumWidth(widthSlider);
+
+    sliderLayout->addWidget(aSlider);
+
+
+    bLabel = new QLabel();
+    sliderLayout->addWidget(bLabel);
+
+    // Valeur de b
+    bSlider = new QSlider(Qt::Horizontal);
+    bSlider->setMinimum(1);
+    bSlider->setMaximum(10);
+    bSlider->setSingleStep(1);
+    bSlider->setTickInterval(10);
+    bSlider->setTickPosition(QSlider::TicksBelow);
+    //bSlider->setStyleSheet("background-color: white;");
+    bSlider->setMaximumWidth(widthSlider);
+
+
+    sliderLayout->addWidget(bSlider);
+
+
+    // Nombre de cibles
+    nbCibleLabel = new QLabel();
+    sliderLayout->addWidget(nbCibleLabel);
+
+    // Valeur de nbCible
+    nbCibleSlider = new QSlider(Qt::Horizontal);
+    nbCibleSlider->setMinimum(2);
+    nbCibleSlider->setMaximum(10);
+    nbCibleSlider->setSingleStep(1);
+    nbCibleSlider->setTickInterval(10);
+    nbCibleSlider->setTickPosition(QSlider::TicksBelow);
+    //nbCibleSlider->setStyleSheet("background-color: white;");
+    nbCibleSlider->setSliderPosition(10);
+    nbCibleSlider->setMaximumWidth(widthSlider);
+
+    sliderLayout->addWidget(nbCibleSlider);
+
+
+
 
     QBoxLayout *graphHomeLayout = new QVBoxLayout();
     resultsLayout->addLayout(graphHomeLayout);

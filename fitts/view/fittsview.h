@@ -66,7 +66,7 @@ private:
     /**
      * @brief Afficher l'historique des résultats
      */
-	void displayHisto();
+    void displayHisto();
 
     /**
      * @brief Modifier dynamiquement l'apparence de l'interface courante
@@ -142,6 +142,14 @@ private:
 	QLabel *diffMoy;
 	QLabel *itc95;
     QLabel *avgTime;
+    QLabel *aLabel;
+    QLabel *bLabel;
+    QLabel *nbCibleLabel;
+
+    // Sliders pour la dynamisation des valuers de a et b
+    QSlider *aSlider;
+    QSlider *bSlider;
+    QSlider *nbCibleSlider;
 
     // Graphiques résultats
     ZoomableChartView *plotHome; ///< Vue pour le graphique du temps par cible

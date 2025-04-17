@@ -62,7 +62,7 @@ private:
     /**
      * @brief Calculer les résultats des graphes
      */
-	void calculateResultHome();
+    void calculateResultHome();
 
     /**
      * @brief Ajouter un résultat au JSON
@@ -77,15 +77,17 @@ private:
 
 public slots:
     void showHelp();
+    void initResultsScreen();
+    void updateAValue(int);
+    void updateBValue(int);
 
 private slots:
     void initEvalScreen();
-    void initResultsScreen();
     void initSettingsScreen();
 
     void openJsonFile();
 
-	void aValueChanged(double value);
+    void aValueChanged(double value);
 	void bValueChanged(double value);
 	void nbCibleChanged(int value);
 	void minSizeChanged(int value);

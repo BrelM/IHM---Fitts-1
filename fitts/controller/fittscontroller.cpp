@@ -602,3 +602,117 @@ void FittsController::endKeystrokeEval(const QModelIndex &index) {
         "<br><br>Encodage Keystroke pour le calcul du temps théorique "
         "(méthode souris) : H (PK)^(2*profondeur) H");
 }
+
+
+void FittsController::startKeystrokeEval1() {
+    qDebug() << "Démarrage évaluation Keystroke : Opérateur K";
+
+    this->keystrokeEvalStarted = false;
+    this->keystrokeModel->mesuredTimes.clear();
+
+    this->fittsView->mainStack->setCurrentWidget(
+        this->fittsView->keystrokeEval1ScreenWidget);    
+
+}
+
+
+
+void FittsController::followUpKeystrokeEval1() {
+
+    if (this->keystrokeModel->mesuredTimes.isEmpty()) {
+
+        if (!this->keystrokeEvalStarted) {
+            this->timer = new QElapsedTimer;
+            timer->start();
+
+            this->keystrokeEvalStarted = true;
+        }
+        else {
+
+            // Enregistrer le temps écoulé depuis la dernière relance
+            this->keystrokeModel->mesuredTimes.append(timer->elapsed());
+
+            // Relancer le timer
+            timer->restart();
+        }
+    }
+    else {
+
+        // Enregistrer le temps écoulé depuis la dernière relance
+        this->keystrokeModel->mesuredTimes.append(timer->elapsed());
+
+        // Relancer le timer
+        timer->restart();
+
+    }
+
+    // Si dix tests ont été effectués
+    if (this->keystrokeModel->mesuredTimes.length() == 10) {
+        this->endKeystrokeEval1();
+        return;
+    }
+
+    // Mettre à jour le nombre d'essais restants
+    this->fittsView->keystrokeInfo->setText("Encore " + QString::number(10 - this->keystrokeModel->mesuredTimes.size()) + " essais.");
+    this->fittsView->keystrokeInfo->update();
+
+    // Désactiver le bouton
+    this->fittsView->firstScenarioEvalBtn->setText("Attends !");
+    this->fittsView->firstScenarioEvalBtn->setEnabled(false);
+    this->fittsView->firstScenarioEvalBtn->update();
+
+    // Générer un temps d'attente aléatoire
+    qint64 randomTime = QRandomGenerator::global()->generate() % 5000;
+
+    // Attendre le temps aléatoire
+    qint64 startTimestamp = QDateTime::currentMSecsSinceEpoch();
+
+    QTimer::singleShot(randomTime, this, [=]() {
+
+        qint64 endTimestamp = QDateTime::currentMSecsSinceEpoch();
+        qint64 elapsed = endTimestamp - startTimestamp;
+
+        // qDebug() << "Temps écoulé:" << (int)(elapsed / 1000) << "s";
+
+        // Réactiver le bouton
+        this->fittsView->firstScenarioEvalBtn->setText("Clique ici");
+        this->fittsView->firstScenarioEvalBtn->setEnabled(true);
+        this->fittsView->firstScenarioEvalBtn->update();
+
+        // Relancer le timer
+        timer->restart();
+
+    });
+
+
+
+
+}
+
+
+
+
+void FittsController::endKeystrokeEval1() {
+
+    this->fittsView->mainStack->setCurrentWidget(
+        this->fittsView->keystrokeResultScreenWidget);
+
+    qreal tempsMoyen = 0;
+
+    foreach (qint64 t, this->keystrokeModel->mesuredTimes) {
+        tempsMoyen += t;
+    }
+
+    tempsMoyen /= this->keystrokeModel->mesuredTimes.length();
+
+
+    this->fittsView->keystrokeResultLabel->setText(
+        "Temps réalisé : <span style='font-size: 32px'>" +
+        QString::number(tempsMoyen) + "</span> ms" +
+        "<br>Temps théorique : <span style='font-size: 32px'>" +
+        QString::number(this->keystrokeModel->k) + "</span> ms" +
+        "<br><br>Note : la charge mentale n'est pas prise en compte dans ce "
+        "scénario car le bouton à appuyer ne change pas de position." +
+        "<br><br>Encodage Keystroke pour le calcul du temps théorique "
+        "(méthode clavier) : K");
+}

@@ -5,7 +5,6 @@
 #include "fittsmodel.h"
 #include "graphicwidget.h"
 
-#include <iostream>
 
 FittsView::FittsView(FittsController *fittsController, FittsModel *fittsModel)
 
@@ -42,6 +41,10 @@ FittsView::FittsView(FittsController *fittsController, FittsModel *fittsModel)
             SLOT(loadKeystrokeSettings()));
     connect(defaultScenarioBtn, SIGNAL(clicked()), fittsController,
             SLOT(startKeystrokeEval()));
+    connect(firstScenarioBtn, SIGNAL(clicked()), fittsController,
+            SLOT(startKeystrokeEval1()));
+    connect(firstScenarioEvalBtn, SIGNAL(clicked()), fittsController, SLOT(followUpKeystrokeEval1()));
+
     connect(tree, SIGNAL(doubleClicked(const QModelIndex &)), fittsController,
             SLOT(endKeystrokeEval(const QModelIndex &)));
 
@@ -595,6 +598,7 @@ void FittsView::initWindows() {
     scenariosWidget->setLayout(scenariosLayout);
     keystrokeLayout->addWidget(scenariosWidget);
 
+    // Adding default scenario
     QWidget *defaultScenarioItem = new QWidget;
     QBoxLayout *defaultScenarioItemLayout = new QVBoxLayout;
     defaultScenarioItem->setLayout(defaultScenarioItemLayout);
@@ -621,6 +625,36 @@ void FittsView::initWindows() {
     defaultScenarioItemActionsLayout->addStretch();
     defaultScenarioItemActionsLayout->addWidget(defaultScenarioBtn);
 
+
+    // Adding first scenario, to evaluate operator K time
+    QWidget *firstScenarioItem = new QWidget;
+    QBoxLayout *firstScenarioItemLayout = new QVBoxLayout;
+    firstScenarioItem->setLayout(firstScenarioItemLayout);
+    firstScenarioItem->setProperty("class", "scenario-container");
+    scenariosLayout->addWidget(firstScenarioItem);
+
+    QLabel *firstScenarioTitle =
+        new QLabel("Scénario 1: Cliquer sur le cercle");
+    firstScenarioTitle->setProperty("class", "subtitle");
+    firstScenarioItemLayout->addWidget(firstScenarioTitle);
+
+    QLabel *keystrokeEval1GuideLabel = new QLabel(
+        "Ce test consiste à l'évaluation expérimentale du temps de l'opérateur K."
+        "\nLorsque demandé, cliquez sur le button au centre de l'écran le plus rapidement possible."
+        " Après neufs répétitions, une estimation moyenne du temps de l'opérateur K vous sera affichée");
+    keystrokeEval1GuideLabel->setWordWrap(true);
+    firstScenarioItemLayout->addWidget(keystrokeEval1GuideLabel);
+
+    QBoxLayout *firstScenarioItemActionsLayout = new QHBoxLayout;
+    firstScenarioItemLayout->addLayout(firstScenarioItemActionsLayout);
+
+    firstScenarioBtn = new QPushButton("Démarrer");
+    firstScenarioBtn->setCursor(Qt::PointingHandCursor);
+    firstScenarioItemActionsLayout->addStretch();
+    firstScenarioItemActionsLayout->addWidget(firstScenarioBtn);
+
+
+    // Adding screen option buttons
     scenariosLayout->addStretch();
 
     QBoxLayout *keystrokeBottomBarLayout = new QHBoxLayout;
@@ -715,6 +749,60 @@ void FittsView::initWindows() {
     connect(btnBackFromKeystrokeEval, &QPushButton::clicked, this,
             [this]() { mainStack->setCurrentWidget(keystrokeScreenWidget); });
     keystrokeEvalLayout->addWidget(btnBackFromKeystrokeEval);
+
+
+    // Ecran évaluation Keystroke: Operateur K
+    keystrokeEval1ScreenWidget = new QWidget;
+    QBoxLayout *keystrokeEval1Layout = new QVBoxLayout;
+    keystrokeEval1ScreenWidget->setLayout(keystrokeEval1Layout);
+    mainStack->addWidget(keystrokeEval1ScreenWidget);
+
+    /*
+
+    graphicViewKeystroke = new GraphicWidget;
+    sceneKeystroke = new QGraphicsScene;
+    graphicViewKeystroke->setScene(sceneKeystroke);
+    graphicViewKeystroke->fitInView(sceneKeystroke->sceneRect(), Qt::KeepAspectRatio);
+    sceneKeystroke->setSceneRect(QRect(0, 0, graphicViewKeystroke->width() - 64, 256));
+
+    int circleSize = 100;
+    int posX = (int)(keystrokeEval1ScreenWidget->width() / 2 - circleSize / 2);
+    int posY = (int)(keystrokeEval1ScreenWidget->height() / 2 - circleSize / 2);
+
+    sceneKeystroke->addEllipse(posX, posY, circleSize, circleSize, QPen(QColor(color_blue)), QBrush(QColor(color_blue)));
+
+    keystrokeEval1Layout->addWidget(graphicViewKeystroke);
+
+    */
+
+    // The button to press
+    firstScenarioEvalBtn = new QPushButton("Clique ici");
+    firstScenarioEvalBtn->setCursor(Qt::PointingHandCursor);
+    firstScenarioEvalBtn->setProperty("class", "keystrokeEvalBtn");
+
+    QBoxLayout *btnCenteringLayout = new QHBoxLayout();
+    btnCenteringLayout->addStretch();
+    btnCenteringLayout->addWidget(firstScenarioEvalBtn);
+    btnCenteringLayout->addStretch();
+
+    QWidget *btnCentering = new QWidget();
+    btnCentering->setLayout(btnCenteringLayout);
+
+
+    keystrokeEval1Layout->addStretch();
+    keystrokeEval1Layout->addWidget(btnCentering, 0, Qt::AlignHCenter);
+
+    keystrokeEval1Layout->addStretch();
+
+    keystrokeInfo = new QLabel("Appuyez sur le bouton pour débuter");
+    keystrokeInfo->setProperty("class", "subtitle");
+    keystrokeInfo->setAlignment(Qt::AlignCenter);
+    keystrokeEval1Layout->addWidget(keystrokeInfo);
+
+    keystrokeEval1Layout->addWidget(btnBackFromKeystrokeEval, 0, Qt::AlignHCenter);
+
+
+
 
     // Ecran résultats Keystroke
     keystrokeResultScreenWidget = new QWidget;

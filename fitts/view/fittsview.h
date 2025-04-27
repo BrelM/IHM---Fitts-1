@@ -99,6 +99,7 @@ private:
     QWidget *keystrokeScreenWidget;
     QWidget *keystrokeSettingsScreenWidget;
     QWidget *keystrokeEvalScreenWidget;
+    QWidget *keystrokeEval1ScreenWidget;
     QWidget *keystrokeResultScreenWidget;
 
     // Écran principal
@@ -114,10 +115,15 @@ private:
     QPushButton *btnSaveKeystrokeSettings;
     QPushButton *btnKeystrokeSettings;
     QPushButton *defaultScenarioBtn;
+    QPushButton *firstScenarioBtn;
+    QPushButton *firstScenarioEvalBtn;
 
     // Keystroke
     QTreeView *tree;
     QLabel *keystrokeResultLabel;
+    QLabel *keystrokeInstLabel;
+    QLabel *keystrokeInfo;
+
 
     // Inputs valeurs
 	QDoubleSpinBox *aValue;
@@ -134,6 +140,10 @@ private:
     // Zone test Fitts
 	GraphicWidget *graphicView;
 	QGraphicsScene *scene;
+
+    // Zone test Keystroke
+    GraphicWidget *graphicViewKeystroke;
+    QGraphicsScene *sceneKeystroke;
 
     // Labels stats Fitts
 	QLabel *testLabel;

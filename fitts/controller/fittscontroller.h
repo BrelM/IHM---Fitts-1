@@ -10,6 +10,8 @@
 #include <QChartView>
 #include <QDebug>
 #include <QElapsedTimer>
+#include <QTimer>
+#include <QDateTime>
 #include <QHorizontalBarSeries>
 #include <QJsonArray>
 #include <QJsonDocument>
@@ -74,6 +76,7 @@ private:
 	KeystrokeModel *keystrokeModel;
 
     QElapsedTimer *timer;
+    bool keystrokeEvalStarted = false;
 
 public slots:
     void showHelp();
@@ -114,6 +117,22 @@ private slots:
 	 * @brief Terminer le test du modèle Keystroke
 	 */
     void endKeystrokeEval(const QModelIndex &index);
+
+    /**
+     * @brief Démarrer le test du modèle Keystroke pour l'opérateur K
+     */
+    void startKeystrokeEval1();
+
+    /**
+     * @brief Suivi du test de du modèle de Keystroke pour l'opérateur K
+     */
+    void followUpKeystrokeEval1();
+
+    /**
+     * @brief Terminer le test du modèle Keystroke pour l'opérateur K
+     */
+    void endKeystrokeEval1();
+
 };
 
 #endif // FITTSCONTROLLER_H

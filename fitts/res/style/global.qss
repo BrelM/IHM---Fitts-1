@@ -21,6 +21,7 @@ QAbstractButton:hover {
     border: 2px solid palette(highlight);
 }
 
+
 .screen-title {
     font-weight: 500;
     font-size: 24px;
@@ -109,3 +110,11 @@ QSlider::add-page:horizontal {
     border: 1px solid #555;
     border-radius: 5px;
 }
+
+.keystrokeEvalBtn {
+    border-radius: 20px;
+    width: 100px;
+    height: 100px;
+
+}
+

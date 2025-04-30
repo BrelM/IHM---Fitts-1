@@ -252,6 +252,9 @@ void FittsController::calculateResultHome() {
                                 this->fittsModel->cercleCenter[i].y(),
                             2));
 
+        // On stocke la distance calculée
+        this->fittsModel->distances.append(D);
+
         // Courbe Théorique
         // On multiplie par 1000 pour être en ms
         double value = (this->fittsModel->a * 1000) +
@@ -527,6 +530,7 @@ void FittsController::showHelp() {
 
 
 void FittsController::displayResults() {
+    /*
     this->fittsView->diffMoy->setText(
         "Différence moyenne = " + QString::number(this->fittsModel->diffMoy) +
         " ms");
@@ -538,6 +542,17 @@ void FittsController::displayResults() {
     this->fittsView->itc95->setText("Intervalle de conf à 95% = " +
                                     QString::number(this->fittsModel->itc95) +
                                     " ms");
+    */
+    qreal avgDist = 0;
+
+    foreach (auto dist, this->fittsModel->distances) {
+        avgDist += dist;
+    }
+    avgDist /= this->fittsModel->distances.size();
+
+
+    this->fittsView->erreurType->setText(
+        "Distance moyenne = " + QString::number(avgDist));
     this->fittsView->avgTime->setText(
         "Temps moyen = " + QString::number(this->fittsModel->avgTime) + " ms");
 }
@@ -608,6 +623,8 @@ void FittsController::startKeystrokeEval1() {
     qDebug() << "Démarrage évaluation Keystroke : Opérateur K";
 
     this->keystrokeEvalStarted = false;
+    this->fittsView->keystrokeInfo->setText("Appuyez sur le bouton pour débuter");
+
     this->keystrokeModel->mesuredTimes.clear();
 
     this->fittsView->mainStack->setCurrentWidget(
@@ -653,7 +670,7 @@ void FittsController::followUpKeystrokeEval1() {
     }
 
     // Mettre à jour le nombre d'essais restants
-    this->fittsView->keystrokeInfo->setText("Encore " + QString::number(10 - this->keystrokeModel->mesuredTimes.size()) + " essais.");
+    this->fittsView->keystrokeInfo->setText("Encore <span style='font-size: 64px; font-weight: 500'>" + QString::number(10 - this->keystrokeModel->mesuredTimes.size()) + "</span> essais.");
     this->fittsView->keystrokeInfo->update();
 
     // Désactiver le bouton
@@ -665,12 +682,12 @@ void FittsController::followUpKeystrokeEval1() {
     qint64 randomTime = QRandomGenerator::global()->generate() % 5000;
 
     // Attendre le temps aléatoire
-    qint64 startTimestamp = QDateTime::currentMSecsSinceEpoch();
+    // qint64 startTimestamp = QDateTime::currentMSecsSinceEpoch();
 
     QTimer::singleShot(randomTime, this, [=]() {
 
-        qint64 endTimestamp = QDateTime::currentMSecsSinceEpoch();
-        qint64 elapsed = endTimestamp - startTimestamp;
+        // qint64 endTimestamp = QDateTime::currentMSecsSinceEpoch();
+        // qint64 elapsed = endTimestamp - startTimestamp;
 
         // qDebug() << "Temps écoulé:" << (int)(elapsed / 1000) << "s";
 

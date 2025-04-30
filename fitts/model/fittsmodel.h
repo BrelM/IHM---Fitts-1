@@ -37,6 +37,7 @@ private:
 	QList<QPoint> cercleCenter;
 	QList<int> cercleSize;
 	QList<qint64> times;
+    QList<qreal> distances;
 
 	friend FittsView;
 	friend FittsController;

@@ -152,6 +152,7 @@ private:
 	QLabel *diffMoy;
 	QLabel *itc95;
     QLabel *avgTime;
+    QLabel *avgDist;
     QLabel *aLabel;
     QLabel *bLabel;
     QLabel *nbCibleLabel;

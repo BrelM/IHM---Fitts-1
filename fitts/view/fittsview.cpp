@@ -278,18 +278,18 @@ void FittsView::initWindows() {
     statsWidget->setLayout(statsWidgetLayout);
     statsWidget->setProperty("class", "section");
 
-
+/*
     ecartType = new QLabel();
     statsWidgetLayout->addWidget(ecartType);
 
     diffMoy = new QLabel();
     statsWidgetLayout->addWidget(diffMoy);
-
+*/
     erreurType = new QLabel();
     statsWidgetLayout->addWidget(erreurType);
 
-    itc95 = new QLabel();
-    statsWidgetLayout->addWidget(itc95);
+    // itc95 = new QLabel();
+    // statsWidgetLayout->addWidget(itc95);
 
     avgTime = new QLabel();
     statsWidgetLayout->addWidget(avgTime);
@@ -788,16 +788,18 @@ void FittsView::initWindows() {
     QWidget *btnCentering = new QWidget();
     btnCentering->setLayout(btnCenteringLayout);
 
-
-    keystrokeEval1Layout->addStretch();
-    keystrokeEval1Layout->addWidget(btnCentering, 0, Qt::AlignHCenter);
-
     keystrokeEval1Layout->addStretch();
 
     keystrokeInfo = new QLabel("Appuyez sur le bouton pour débuter");
     keystrokeInfo->setProperty("class", "subtitle");
     keystrokeInfo->setAlignment(Qt::AlignCenter);
     keystrokeEval1Layout->addWidget(keystrokeInfo);
+
+    keystrokeEval1Layout->addStretch();
+    keystrokeEval1Layout->addWidget(btnCentering, 0, Qt::AlignHCenter);
+
+    keystrokeEval1Layout->addStretch();
+
 
     keystrokeEval1Layout->addWidget(btnBackFromKeystrokeEval, 0, Qt::AlignHCenter);
 
